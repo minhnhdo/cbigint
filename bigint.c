@@ -1,4 +1,11 @@
-#include <bigint.h>
+#include "bigint.h"
+
+const unsigned int MAXD = (unsigned int) -1;
+
+struct bigint {
+    int size;
+    int *n;
+};
 
 bigint *bi_create(int size) {
     if (size <= 0)
@@ -19,7 +26,20 @@ void bi_delete(bigint *a) {
     free(a);
 }
 
-void bi_printnum(bigint *a) {
+int bi_cmp(bigint *a, bigint *b) {
+    int *arr[2] = {a->n, b->n};
+    int bigger = (a->size > b->size) ? a->size : b->size;
+    int which = (a->size > b->size) ? 0 : 1;
+    int i;
+    for (i = 0; i < a->size && i < b->size; i++) {
+        if (a->n[i] != b->n[i])
+            return a->n[i] - b->n[i];
+    }
+    for (; i < bigger; i++) {
+        if (arr[which][i] != 0)
+            return (which == 0) ? 1 : -1;
+    }
+    return 0;
 }
 
 bigint *bi_add(bigint *a, bigint *b) {
@@ -39,7 +59,7 @@ bigint *bi_add(bigint *a, bigint *b) {
     int i;
     // whole number adding
         // per "digit" adding
-    for (i = 0; i < bigger; i++) {
+    for (i = 0; i < sa && i < sb; i++) {
         tmp = na[i] + nb[i] + carry;
         if (tmp > MAXD) {
             n[i] = MAXD;
