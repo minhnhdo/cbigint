@@ -84,12 +84,26 @@ int main(int argc, char *argv[]) {
 
     // test 8
     a = bi_createfromint(MAXD);
-    b = bi_createfromint(MAXD);
+    b = bi_createfromint(MAXD + 5);
     bi_print(a);
     printf(" + ");
     bi_print(b);
     printf(" is ");
     c = bi_add(a, b);
+    bi_print(c);
+    printf("\n");
+    bi_delete(a);
+    bi_delete(b);
+    bi_delete(c);
+
+    // test 8
+    a = bi_createfromint(MAXD);
+    b = bi_createfromint(5);
+    bi_print(a);
+    printf(" - ");
+    bi_print(b);
+    printf(" is ");
+    c = bi_sub(a, b);
     bi_print(c);
     printf("\n");
     bi_delete(a);

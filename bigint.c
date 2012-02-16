@@ -119,7 +119,40 @@ bigint *bi_sub(bigint *a, bigint *b) {
     int sa = a->size,
         sb = b->size;
     int *na = a->n,
-        *nb = a->n;
+        *nb = b->n;
+    bigint *retval = bi_create((sa < sb) ? sb : sa);
+    if (retval == NULL)
+        return NULL;
+    int *n = retval->n;
+    int biggersize = retval->size;
+    int *bigger = ((sa > sb) > 0) ? na : nb;
+    int tmp = 0,
+        carry = 0;
+    int i;
+    for (i = 0; i < sa && i < sb; i++) {
+        if (na[i] < nb[i] + carry) {
+            n[i] = MAXD + na[i] - nb[i] - carry;
+            carry = 1;
+        }
+        else {
+            n[i] = na[i] - nb[i] - carry;
+            carry = 0;
+        }
+        /* printf("na[%d]=%d\n", i, na[i]);
+        printf("nb[%d]=%d\n", i, nb[i]);
+        printf("n[%d]=%d\n", i, n[i]);*/
+    }
+    while (carry != 0 && i < biggersize) {
+        if (bigger[i] < carry)
+            n[i] = MAXD - 1;
+        else {
+            n[i] = bigger[i] - carry;
+            carry = 0;
+        }
+        // printf("n[%d]=%d\n", i, n[i]);
+        i++;
+    }
+    return retval;
 }
 
 bigint *bi_mult(bigint *a, bigint *b) {
