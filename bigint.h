@@ -12,3 +12,4 @@ void bi_delete(bigint *);
 void bi_print(bigint *);
 bigint *bi_add(bigint *, bigint *);
 bigint *bi_sub(bigint *, bigint *);
+bigint *bi_mult(bigint *, bigint *);

@@ -114,8 +114,6 @@ bigint *bi_add(bigint *a, bigint *b) {
 }
 
 bigint *bi_sub(bigint *a, bigint *b) {
-    if (bi_cmp(a, b) < 0)
-        return bi_create(1);
     int sa = a->size,
         sb = b->size;
     int *na = a->n,
@@ -129,6 +127,8 @@ bigint *bi_sub(bigint *a, bigint *b) {
     int tmp = 0,
         carry = 0;
     int i;
+    if (bi_cmp(a, b) < 0)
+        return retval;
     for (i = 0; i < sa && i < sb; i++) {
         if (na[i] < nb[i] + carry) {
             n[i] = MAXD + na[i] - nb[i] - carry;
@@ -156,7 +156,24 @@ bigint *bi_sub(bigint *a, bigint *b) {
 }
 
 bigint *bi_mult(bigint *a, bigint *b) {
-    bigint *retval = bi_create(a->size + b->size);
+    bigint *retval = bi_create((a->size + b->size) * 9);
     if (retval == NULL)
         return NULL;
+    int sa = a->size,
+        sb = b->size;
+    int *na = a->n,
+        *nb = b->n,
+        *n = retval->n;
+    long long tmp;
+    int carry = 0;
+    int i, j;
+    for (j = 0; j < sb; j++) {
+        for (i = 0; i < sa; i++) {
+            tmp = na[i] * nb[j] + n[i+j] + carry;
+            n[i+j] = tmp % MAXD;
+            carry = tmp / MAXD;
+        }
+        n[j+sa] = carry;
+    }
+    return retval;
 }

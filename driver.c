@@ -110,5 +110,33 @@ int main(int argc, char *argv[]) {
     bi_delete(b);
     bi_delete(c);
 
+    // test 9
+    a = bi_createfromint(MAXD);
+    b = bi_createfromint(5);
+    bi_print(a);
+    printf(" * ");
+    bi_print(b);
+    printf(" is ");
+    c = bi_mult(a, b);
+    bi_print(c);
+    printf("\n");
+    bi_delete(a);
+    bi_delete(b);
+    bi_delete(c);
+
+     // test 10
+    a = bi_createfromint(MAXD);
+    b = bi_createfromint(MAXD);
+    bi_print(a);
+    printf(" * ");
+    bi_print(b);
+    printf(" is ");
+    c = bi_mult(a, b);
+    bi_print(c);
+    printf("\n");
+    bi_delete(a);
+    bi_delete(b);
+    bi_delete(c);
+
     return 0;
 }
