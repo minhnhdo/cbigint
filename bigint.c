@@ -15,8 +15,10 @@ bigint *bi_create(int size) {
         return NULL;
     retval->size = size;
     retval->n = malloc(size*sizeof(unsigned int));
-    if (retval->n == NULL)
+    if (retval->n == NULL) {
+        free(retval);
         return NULL;
+    }
     memset(retval->n, 0, size*sizeof(unsigned int));
     return retval;
 }
@@ -84,6 +86,12 @@ bigint *bi_add(bigint *a, bigint *b) {
     return retval;
 }
 
-bigint *bi_sub(bigint *a, bigint *b) {
+bigint *bi_mult(bigint *a, bigint *b) {
+    bigint *retval = bi_create(a->size + b->size);
+    if (retval == NULL)
+        return NULL;
 }
 
+bigint *bi_sub(bigint *a, bigint *b) {
+    ASSERT(bi_cmp(a, b) >= 0);
+}
